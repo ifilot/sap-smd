@@ -8,6 +8,8 @@ built with TTL logic units. The core principle behind the project is to create a
 **"Simple as Possible"** system, focusing on simplicity, modularity, and
 compactness.
 
+![SAP-SMD demo](img/sap-smd-demo.gif)
+
 ## Key Features
 
 - **TTL Logic-Based Design**: The computer is built using traditional TTL
