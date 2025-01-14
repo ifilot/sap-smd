@@ -1,7 +1,7 @@
 # Modular 8-bit "Simple as Possible" TTL-Logics Computer
 
 ![Work in Progress](https://img.shields.io/badge/status-work_in_progress-orange)
-![CERN-OHL](https://img.shields.io/badge/license-CERN--OHL-blue)
+![CERN-OHL](https://img.shields.io/badge/license-CERN--OHL--S-blue)
 
 This project showcases the design and construction of a modular 8-bit computer
 built with TTL logic units. The core principle behind the project is to create a
