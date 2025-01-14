@@ -1,0 +1,6 @@
+LDA $01
+TAB
+ADD
+TAO
+JNZ $02
+JPZ $00

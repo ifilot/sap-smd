@@ -1,0 +1,89 @@
+
+(rules PCB bp-leanplate.dsn
+  (snap_angle 
+    fortyfive_degree
+  )
+  (autoroute_settings
+    (fanout off)
+    (autoroute on)
+    (postroute off)
+    (vias on)
+    (via_costs 50)
+    (plane_via_costs 5)
+    (start_ripup_costs 100)
+    (start_pass_no 1)
+    (layer_rule F.Cu
+      (active on)
+      (preferred_direction horizontal)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 4.6)
+    )
+    (layer_rule B.Cu
+      (active on)
+      (preferred_direction vertical)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 3.0)
+    )
+  )
+  (rule
+    (width 250.0)
+    (clearance 200.0)
+    (clearance 125.0 (type smd_to_turn_gap))
+    (clearance 50.0 (type smd))
+    (clearance 200.0 (type "kicad_default"))
+  )
+  (padstack "Via[0-1]_800:400_um"
+    (shape
+      (circle F.Cu 800.0 0.0 0.0)
+    )
+    (shape
+      (circle B.Cu 800.0 0.0 0.0)
+    )
+    (attach off)
+  )
+  (via 
+    "Via[0-1]_800:400_um" "Via[0-1]_800:400_um" default
+  )
+  (via 
+    "Via[0-1]_800:400_um-kicad_default" "Via[0-1]_800:400_um" "kicad_default"
+  )
+  (via_rule
+    default "Via[0-1]_800:400_um"
+  )
+  (via_rule
+    "kicad_default" "Via[0-1]_800:400_um-kicad_default"
+  )
+  (class default
+    (clearance_class default)
+    (via_rule default)
+    (rule
+      (width 250.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+  (class "kicad_default"
+    BUS0 BUS1 BUS2 BUS3 BUS4 BUS5 BUS6 BUS7
+    VCC CLK J ~{CLR} CO CE GND "MAR_A0"
+    "MAR_A1" "MAR_A2" "MAR_A3" "MAR_A4" "MAR_A5" "MAR_A6" "MAR_A7" II
+    MI "A_D0" "A_D1" "A_D2" "A_D3" "A_D4" "A_D5" "A_D6"
+    "A_D7" AI AO "B_D0" "B_D1" "B_D2" "B_D3" "B_D4"
+    "B_D5" "B_D6" "B_D7" BI BO RO RRO RI
+    "IR_D0" "IR_D1" "IR_D2" "IR_D3" "IR_D4" "IR_D5" "IR_D6" "IR_D7"
+    PCL2 "Net-(J1-Shield)" EO CF ZF HLT TI TO
+    "unconnected-(J1-D+-Pad3)" OCA9 OCA10 OCA11 OCA12 OCA13 OCA14 OCA15
+    "unconnected-(J1-D--Pad2)" OCB8 OCB9 OCB10 OCB11 OCB12 OCB13 OCB14
+    OCB15 PCL3 OI "unconnected-(U3-L5-Pad14)" "unconnected-(U3-L2-Pad11)" "unconnected-(U3-L1-Pad10)" PCL4 PCL5
+    HLTIN "unconnected-(U3-L0-Pad9)" "unconnected-(U3-L6-Pad15)" "unconnected-(U3-L4-Pad13)" "unconnected-(U3-L3-Pad12)" "unconnected-(U3-L7-Pad16)" FI "unconnected-(U10-OCRA0-Pad9)"
+    "unconnected-(U10-PCL7-Pad48)" "unconnected-(U10-OCRB0-Pad25)"
+    (clearance_class "kicad_default")
+    (via_rule "kicad_default")
+    (rule
+      (width 250.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+)
