@@ -28,6 +28,16 @@ compactness.
   with different configurations and expand the system to suit specific needs or
   projects.
 
+## Technical specifications
+
+- 8 bit program counter
+- 256 bytes of RAM and 256 bytes of program ROM
+- 256 configurable programs via a dip switch
+- Three general-purpose register: A, B and T
+- Simple ALU allowing for addition and subtraction
+- EEPROM-configurable instruction decoder
+- Custom assembly language including Python-based assembler
+
 ## Goals of the Project
 
 The project aims to:
@@ -38,22 +48,6 @@ The project aims to:
 3. **Encourage Miniaturization**: Demonstrate how SMD components can be used
    effectively in hobbyist and educational projects to save space while
    maintaining functionality.
-
-## Design Overview
-
-The computer consists of several interconnected modules:
-- **Arithmetic Logic Unit (ALU)**: Handles basic arithmetic and logical
-  operations.
-- **Instruction Decoder**: Handles control lines based on machine code 
-  instructions.
-- **Registers**: Temporary storage for data and instructions during operation.
-- **Control Logic**: Directs the flow of data and controls the execution of
-  instructions.
-- **Memory**: Stores programs and data, using a simple addressing scheme.
-- **Output**: Facilitates communication with the user.
-
-Each module is implemented with a combination of SMD-type TTL ICs, emphasizing
-straightforward design while keeping the size compact.
 
 ## Why SMD Components?
 
