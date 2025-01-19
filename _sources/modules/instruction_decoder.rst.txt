@@ -20,119 +20,126 @@ a set, no two control lines can be activated simultaneously.
 Mapping
 -------
 
+.. note::
+   In the tables below, we use the following abbreviations:
+   * ALU: Arithmetic and Logic Unit
+   * IR: Instrucion Register
+   * MAR: Memory Address Register
+   * PC: Program Counter
+
 .. list-table:: Parallel Control Lines
    :widths: 20, 20, 60
    :header-rows: 1
 
    * - Control line
-     - Code
+     - Micro-instruction
      - Description
    * - :code:`PCL0`
-     - CODE000
-     - Description for control line 0.
+     - :code:`CE`
+     - PC count enable
    * - :code:`PCL1`
-     - CODE001
-     - Description for control line 1.
+     - :code:`FI`
+     - ALU flag register in
    * - :code:`PCL2`
-     - CODE002
-     - Description for control line 2.
+     - :code:`SU`
+     - ALU subtract operation
    * - :code:`PCL3`
-     - CODE003
-     - Description for control line 3.
+     - :code:`X`
+     - Unused
    * - :code:`PCL4`
-     - CODE004
-     - Description for control line 4.
+     - :code:`X`
+     - Unused
    * - :code:`PCL5`
-     - CODE005
-     - Description for control line 5.
+     - :code:`X`
+     - Unused
    * - :code:`PCL6`
-     - CODE006
-     - Description for control line 6.
+     - :code:`HLT`
+     - Halts the clock line
    * - :code:`PCL7`
-     - CODE007
-     - Description for control line 7.
+     - :code:`/MR`
+     - Used internally to reset T-state counter
 
 .. list-table:: Orthogonal Control Lines A
    :widths: 20, 20, 60
    :header-rows: 1
 
    * - Control line
-     - Code
+     - Micro-instruction
      - Description
    * - :code:`OCA1`
-     - CODE001
-     - Description for control line 1.
+     - :code:`MI`
+     - MAR in: Retrieves memory address from data bus
    * - :code:`OCA2`
-     - CODE002
-     - Description for control line 2.
+     - :code:`II`
+     - IR in: Retrieves instruction from data bus
    * - :code:`OCA3`
-     - CODE003
-     - Description for control line 3.
+     - :code:`J`
+     - PC jump: Retrieves address from data bus
    * - :code:`OCA4`
-     - CODE004
-     - Description for control line 4.
+     - :code:`AI`
+     - A-register in: Stores value from data bus
    * - :code:`OCA5`
-     - CODE005
-     - Description for control line 5.
+     - :code:`BI`
+     - B-register in: Stores value from data bus
    * - :code:`OCA6`
-     - CODE006
-     - Description for control line 6.
+     - :code:`OI`
+     - Output register in: Retrieves value from data bus
    * - :code:`OCA7`
-     - CODE007
-     - Description for control line 7.
+     - :code:`RI`
+     - RAM in: Stores value from data bus in memory
    * - :code:`OCA8`
-     - CODE008
-     - Description for control line 8.
+     - :code:`TI`
+     - T-register in: Stores value from data bus
    * - :code:`OCA9`
-     - CODE009
-     - Description for control line 9.
+     - :code:`X`
+     - Unused
    * - :code:`OCA10`
-     - CODE010
-     - Description for control line 10.
+     - :code:`X`
+     - Unused
    * - :code:`OCA11`
-     - CODE011
-     - Description for control line 11.
+     - :code:`X`
+     - Unused
    * - :code:`OCA12`
-     - CODE012
-     - Description for control line 12.
+     - :code:`X`
+     - Unused
    * - :code:`OCA13`
-     - CODE013
-     - Description for control line 13.
+     - :code:`X`
+     - Unused
    * - :code:`OCA14`
-     - CODE014
-     - Description for control line 14.
+     - :code:`X`
+     - Unused
    * - :code:`OCA15`
-     - CODE015
-     - Description for control line 15.
+     - :code:`X`
+     - Unused
 
 .. list-table:: Orthogonal Control Lines B
    :widths: 20, 20, 60
    :header-rows: 1
 
    * - Control line
-     - Code
+     - Micro-instruction
      - Description
    * - :code:`OCB1`
-     - CODE001
-     - Description for control line 1.
+     - :code:`CO`
+     - PC counter out: Asserts current PC value on data bus
    * - :code:`OCB2`
-     - CODE002
-     - Description for control line 2.
+     - :code:`RRO`
+     - ROM out: Asserts ROM value onto data bus
    * - :code:`OCB3`
-     - CODE003
-     - Description for control line 3.
+     - :code:`AO`
+     - A-register out: Asserts register value onto data bus
    * - :code:`OCB4`
-     - CODE004
-     - Description for control line 4.
+     - :code:`BO`
+     - B-register out: Asserts register value onto data bus
    * - :code:`OCB5`
-     - CODE005
-     - Description for control line 5.
+     - :code:`EO`
+     - ALU sum out: Asserts result of summation onto data bus
    * - :code:`OCB6`
-     - CODE006
-     - Description for control line 6.
+     - :code:`RO`
+     - RAM out: Asserts RAM value onto data bus
    * - :code:`OCB7`
-     - CODE007
-     - Description for control line 7.
+     - :code:`TO`
+     - T-register: Asserts register value onto data bus
    * - :code:`OCB8`
      - CODE008
      - Description for control line 8.
