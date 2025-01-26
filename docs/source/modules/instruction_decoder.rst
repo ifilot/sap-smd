@@ -5,7 +5,8 @@ Instruction decoder
 ===================
 
 The instruction decoder is reponsible for mapping a machine instruction together
-with the t-state counter to the control lines. The instruction decoder in the
+with the t-state counter to the control lines, effectively tying a set of
+microinstructions to a given machine instruction. The instruction decoder in the
 SAM-SMD uses two :code:`SST39SF010` EEPROMS for this mapping. One of the EEPROMS
 directs 8 parallel control lines, which are lines that can be pulled high or low
 in any particular combination. The second EEPROM is tied to four :code:`74HC238`
@@ -141,26 +142,190 @@ Mapping
      - :code:`TO`
      - T-register: Asserts register value onto data bus
    * - :code:`OCB8`
-     - CODE008
-     - Description for control line 8.
+     - :code:`X`
+     - Unused
    * - :code:`OCB9`
-     - CODE009
-     - Description for control line 9.
+     - :code:`X`
+     - Unused
    * - :code:`OCB10`
-     - CODE010
-     - Description for control line 10.
+     - :code:`X`
+     - Unused
    * - :code:`OCB11`
-     - CODE011
-     - Description for control line 11.
+     - :code:`X`
+     - Unused
    * - :code:`OCB12`
-     - CODE012
-     - Description for control line 12.
+     - :code:`X`
+     - Unused
    * - :code:`OCB13`
-     - CODE013
-     - Description for control line 13.
+     - :code:`X`
+     - Unused
    * - :code:`OCB14`
-     - CODE014
-     - Description for control line 14.
+     - :code:`X`
+     - Unused
    * - :code:`OCB15`
-     - CODE015
-     - Description for control line 15.
+     - :code:`X`
+     - Unused
+
+Machine instructions
+--------------------
+
+Upon receiving a new machine instruction, a t-state counter is executed that
+loops over a number of microinstructions. Below, a table is provided showing
+the sequence of microinstructions that are executed per machine instruction
+and per t-state. A secondary table provides an explanation what each machine
+code instruction (opt code) does.
+
+.. note::
+  Despite that the t-state counter allows for up to 20 microinstructions, 
+  typically far fewer such microinstructions are needed.
+
+.. list-table:: Microinstructions per t-state and per machine instruction
+   :header-rows: 1
+
+   * - Instruction
+     - State 0
+     - State 1
+     - State 2
+     - State 3
+     - State 4
+     - State 5
+     - State 6
+   * - :code:`NOP`
+     - :code:`CO | MI`
+     - :code:`RRO | II | CE`
+     - :code:`RT`
+     - 
+     - 
+     - 
+     - 
+   * - :code:`JP`
+     - :code:`CO | MI`
+     - :code:`RRO | II | CE`
+     - :code:`CO | MI`
+     - :code:`RRO | J`
+     - :code:`RT`
+     - 
+     - 
+   * - :code:`LDA`
+     - :code:`CO | MI`
+     - :code:`RRO | II | CE`
+     - :code:`CO | MI`
+     - :code:`RRO | AI | CE`
+     - :code:`RT`
+     - 
+     - 
+   * - :code:`LDB`
+     - :code:`CO | MI`
+     - :code:`RRO | II | CE`
+     - :code:`CO | MI`
+     - :code:`RRO | BI | CE`
+     - :code:`RT`
+     - 
+     - 
+   * - :code:`ADD`
+     - :code:`CO | MI`
+     - :code:`RRO | II | CE`
+     - :code:`0`
+     - :code:`EO | TI | FI`
+     - :code:`TO | AI`
+     - :code:`RT`
+     - 
+   * - :code:`TAB`
+     - :code:`CO | MI`
+     - :code:`RRO | II | CE`
+     - :code:`AO | BI`
+     - :code:`RT`
+     - 
+     - 
+     - 
+   * - :code:`TBA`
+     - :code:`CO | MI`
+     - :code:`RRO | II | CE`
+     - :code:`BO | AI`
+     - :code:`RT`
+     - 
+     - 
+     - 
+   * - :code:`TAO`
+     - :code:`CO | MI`
+     - :code:`RRO | II | CE`
+     - :code:`AO | OI`
+     - :code:`RT`
+     - 
+     - 
+     - 
+   * - :code:`STA`
+     - :code:`CO | MI`
+     - :code:`RRO | II | CE`
+     - :code:`CO | MI`
+     - :code:`RRO | TI`
+     - :code:`TO | MI`
+     - :code:`RI | AO | CE`
+     - :code:`RT`
+   * - :code:`LRA`
+     - :code:`CO | MI`
+     - :code:`RRO | II | CE`
+     - :code:`CO | MI`
+     - :code:`RRO | TI`
+     - :code:`TO | MI`
+     - :code:`RO | AI | CE`
+     - :code:`RT`
+   * - :code:`STB`
+     - :code:`CO | MI`
+     - :code:`RRO | II | CE`
+     - :code:`CO | MI`
+     - :code:`RRO | TI`
+     - :code:`TO | MI`
+     - :code:`RI | BO | CE`
+     - :code:`RT`
+   * - :code:`LRB`
+     - :code:`CO | MI`
+     - :code:`RRO | II | CE`
+     - :code:`CO | MI`
+     - :code:`RRO | TI`
+     - :code:`TO | MI`
+     - :code:`RO | BI | CE`
+     - :code:`RT`
+
+.. list-table:: Explanation of every opt code
+   :header-rows: 1
+
+   * - Instruction
+     - Bytes
+     - Description
+   * - :code:`NOP`
+     - 1
+     - Do nothing
+   * - :code:`JP <ADDR>`
+     - 2
+     - Jump to memory address
+   * - :code:`LDA <VAL>`
+     - 2
+     - Immediate load into register A
+   * - :code:`LDB <VAL>`
+     - 2
+     - Immediate load into register B
+   * - :code:`ADD`
+     - 1
+     - Add A+B and store in A (will overwrite)
+   * - :code:`TAB`
+     - 1
+     - Transfer contents of A to B
+   * - :code:`TBA`
+     - 1
+     - Transfer contents of B to A
+   * - :code:`TAO`
+     - 1
+     - Transfer contents of A to Output
+   * - :code:`STA <ADDR>`
+     - 2
+     - Store A in RAM at address
+   * - :code:`LRA <ADDR>`
+     - 2
+     - Load A from RAM
+   * - :code:`STB <ADDR>`
+     - 2
+     - Store B in RAM at address
+   * - :code:`LRB <ADDR>`
+     - 2
+     - Load B from RAM
