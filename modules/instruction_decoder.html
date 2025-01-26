@@ -285,7 +285,8 @@
   <section id="index-0">
 <span id="instruction-decoder"></span><span id="id1"></span><h1>Instruction decoder<a class="headerlink" href="#index-0" title="Link to this heading">#</a></h1>
 <p>The instruction decoder is reponsible for mapping a machine instruction together
-with the t-state counter to the control lines. The instruction decoder in the
+with the t-state counter to the control lines, effectively tying a set of
+microinstructions to a given machine instruction. The instruction decoder in the
 SAM-SMD uses two <code class="code docutils literal notranslate"><span class="pre">SST39SF010</span></code> EEPROMS for this mapping. One of the EEPROMS
 directs 8 parallel control lines, which are lines that can be pulled high or low
 in any particular combination. The second EEPROM is tied to four <code class="code docutils literal notranslate"><span class="pre">74HC238</span></code>
@@ -475,36 +476,234 @@ a set, no two control lines can be activated simultaneously.</p>
 <td><p>T-register: Asserts register value onto data bus</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">OCB8</span></code></p></td>
-<td><p>CODE008</p></td>
-<td><p>Description for control line 8.</p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p>Unused</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">OCB9</span></code></p></td>
-<td><p>CODE009</p></td>
-<td><p>Description for control line 9.</p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p>Unused</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">OCB10</span></code></p></td>
-<td><p>CODE010</p></td>
-<td><p>Description for control line 10.</p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p>Unused</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">OCB11</span></code></p></td>
-<td><p>CODE011</p></td>
-<td><p>Description for control line 11.</p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p>Unused</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">OCB12</span></code></p></td>
-<td><p>CODE012</p></td>
-<td><p>Description for control line 12.</p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p>Unused</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">OCB13</span></code></p></td>
-<td><p>CODE013</p></td>
-<td><p>Description for control line 13.</p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p>Unused</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">OCB14</span></code></p></td>
-<td><p>CODE014</p></td>
-<td><p>Description for control line 14.</p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p>Unused</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">OCB15</span></code></p></td>
-<td><p>CODE015</p></td>
-<td><p>Description for control line 15.</p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">X</span></code></p></td>
+<td><p>Unused</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="machine-instructions">
+<h2>Machine instructions<a class="headerlink" href="#machine-instructions" title="Link to this heading">#</a></h2>
+<p>Upon receiving a new machine instruction, a t-state counter is executed that
+loops over a number of microinstructions. Below, a table is provided showing
+the sequence of microinstructions that are executed per machine instruction
+and per t-state. A secondary table provides an explanation what each machine
+code instruction (opt code) does.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Despite that the t-state counter allows for up to 20 microinstructions,
+typically far fewer such microinstructions are needed.</p>
+</div>
+<div class="pst-scrollable-table-container"><table class="table" id="id5">
+<caption><span class="caption-number">Table 4 </span><span class="caption-text">Microinstructions per t-state and per machine instruction</span><a class="headerlink" href="#id5" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Instruction</p></th>
+<th class="head"><p>State 0</p></th>
+<th class="head"><p>State 1</p></th>
+<th class="head"><p>State 2</p></th>
+<th class="head"><p>State 3</p></th>
+<th class="head"><p>State 4</p></th>
+<th class="head"><p>State 5</p></th>
+<th class="head"><p>State 6</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">NOP</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">II</span> <span class="pre">|</span> <span class="pre">CE</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RT</span></code></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">JP</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">II</span> <span class="pre">|</span> <span class="pre">CE</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">J</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RT</span></code></p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">LDA</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">II</span> <span class="pre">|</span> <span class="pre">CE</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">AI</span> <span class="pre">|</span> <span class="pre">CE</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RT</span></code></p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">LDB</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">II</span> <span class="pre">|</span> <span class="pre">CE</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">BI</span> <span class="pre">|</span> <span class="pre">CE</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RT</span></code></p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">ADD</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">II</span> <span class="pre">|</span> <span class="pre">CE</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">0</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">EO</span> <span class="pre">|</span> <span class="pre">TI</span> <span class="pre">|</span> <span class="pre">FI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">TO</span> <span class="pre">|</span> <span class="pre">AI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RT</span></code></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">TAB</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">II</span> <span class="pre">|</span> <span class="pre">CE</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">AO</span> <span class="pre">|</span> <span class="pre">BI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RT</span></code></p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">TBA</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">II</span> <span class="pre">|</span> <span class="pre">CE</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">BO</span> <span class="pre">|</span> <span class="pre">AI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RT</span></code></p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">TAO</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">II</span> <span class="pre">|</span> <span class="pre">CE</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">AO</span> <span class="pre">|</span> <span class="pre">OI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RT</span></code></p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">STA</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">II</span> <span class="pre">|</span> <span class="pre">CE</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">TI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">TO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RI</span> <span class="pre">|</span> <span class="pre">AO</span> <span class="pre">|</span> <span class="pre">CE</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RT</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">LRA</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">II</span> <span class="pre">|</span> <span class="pre">CE</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">TI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">TO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RO</span> <span class="pre">|</span> <span class="pre">AI</span> <span class="pre">|</span> <span class="pre">CE</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RT</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">STB</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">II</span> <span class="pre">|</span> <span class="pre">CE</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">TI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">TO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RI</span> <span class="pre">|</span> <span class="pre">BO</span> <span class="pre">|</span> <span class="pre">CE</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RT</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">LRB</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">II</span> <span class="pre">|</span> <span class="pre">CE</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">CO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RRO</span> <span class="pre">|</span> <span class="pre">TI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">TO</span> <span class="pre">|</span> <span class="pre">MI</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RO</span> <span class="pre">|</span> <span class="pre">BI</span> <span class="pre">|</span> <span class="pre">CE</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">RT</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="table" id="id6">
+<caption><span class="caption-number">Table 5 </span><span class="caption-text">Explanation of every opt code</span><a class="headerlink" href="#id6" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Instruction</p></th>
+<th class="head"><p>Bytes</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">NOP</span></code></p></td>
+<td><p>1</p></td>
+<td><p>Do nothing</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">JP</span> <span class="pre">&lt;ADDR&gt;</span></code></p></td>
+<td><p>2</p></td>
+<td><p>Jump to memory address</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">LDA</span> <span class="pre">&lt;VAL&gt;</span></code></p></td>
+<td><p>2</p></td>
+<td><p>Immediate load into register A</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">LDB</span> <span class="pre">&lt;VAL&gt;</span></code></p></td>
+<td><p>2</p></td>
+<td><p>Immediate load into register B</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">ADD</span></code></p></td>
+<td><p>1</p></td>
+<td><p>Add A+B and store in A (will overwrite)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">TAB</span></code></p></td>
+<td><p>1</p></td>
+<td><p>Transfer contents of A to B</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">TBA</span></code></p></td>
+<td><p>1</p></td>
+<td><p>Transfer contents of B to A</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">TAO</span></code></p></td>
+<td><p>1</p></td>
+<td><p>Transfer contents of A to Output</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">STA</span> <span class="pre">&lt;ADDR&gt;</span></code></p></td>
+<td><p>2</p></td>
+<td><p>Store A in RAM at address</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">LRA</span> <span class="pre">&lt;ADDR&gt;</span></code></p></td>
+<td><p>2</p></td>
+<td><p>Load A from RAM</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">STB</span> <span class="pre">&lt;ADDR&gt;</span></code></p></td>
+<td><p>2</p></td>
+<td><p>Store B in RAM at address</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">LRB</span> <span class="pre">&lt;ADDR&gt;</span></code></p></td>
+<td><p>2</p></td>
+<td><p>Load B from RAM</p></td>
 </tr>
 </tbody>
 </table>
@@ -551,6 +750,7 @@ a set, no two control lines can be activated simultaneously.</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping">Mapping</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#machine-instructions">Machine instructions</a></li>
 </ul>
   </nav></div>
 
